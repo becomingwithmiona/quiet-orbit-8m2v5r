@@ -1,0 +1,477 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The "I'm a curious guy" Museum</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Inter:wght@400;600&family=Caveat:wght@500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#06122e;--navy:#0b1f4d;--deep:#132e6b;--blue:#2f5fd0;--bright:#4f8cff;--sky:#cfe0ff;--ice:#eaf2ff;--gold:#d9b46a;--cream:#f7f3ea}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;font-family:Inter,sans-serif;color:var(--cream);background:var(--ink)}
+#glow{position:fixed;width:420px;height:420px;border-radius:50%;pointer-events:none;z-index:1;background:radial-gradient(circle,rgba(110,160,255,.22),transparent 65%);transform:translate(-50%,-50%);left:50%;top:50%}
+#track{display:flex;height:100%;transition:transform 1s cubic-bezier(.7,0,.2,1)}
+.room{flex:0 0 100vw;height:100%;overflow-y:auto;overflow-x:hidden;padding:4.5rem 1.2rem 7rem;position:relative}
+.room>*{position:relative;z-index:2}
+.bg{position:absolute!important;inset:0;z-index:0!important;pointer-events:none;overflow:hidden}
+.label{text-align:center;letter-spacing:.35em;font-size:.72rem;color:var(--gold);text-transform:uppercase}
+h1,h2{font-family:'Playfair Display',serif;text-align:center;margin:.5rem 0 .3rem}
+h1{font-size:clamp(2.3rem,7vw,5rem);line-height:1.05}h2{font-size:clamp(1.9rem,5vw,3.2rem)}
+h3{font-family:'Playfair Display',serif;text-align:center;margin:3rem 0 1.2rem;font-size:1.6rem;color:var(--sky)}
+.intro{text-align:center;max-width:640px;margin:0 auto 2.2rem;color:var(--sky);line-height:1.6}
+.rv{opacity:0;transform:translateY(28px) scale(.97);transition:opacity .7s,transform .7s}
+.room.on .rv{opacity:1;transform:none}
+.tilt{transition:transform .25s ease;transform-style:preserve-3d}
+nav{position:fixed;bottom:1rem;left:0;right:0;display:flex;justify-content:center;align-items:center;gap:.8rem;z-index:9}
+nav button{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);color:#fff;width:46px;height:46px;border-radius:50%;font-size:1.2rem;cursor:pointer;backdrop-filter:blur(6px)}
+nav button:disabled{opacity:.3}
+#dots{display:flex;gap:.45rem;flex-wrap:wrap;max-width:60vw;justify-content:center}#dots span{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.3);cursor:pointer;transition:.3s}#dots span.a{background:var(--gold);width:22px;border-radius:5px}
+#rname{position:fixed;top:.9rem;left:0;right:0;text-align:center;font-size:.72rem;letter-spacing:.25em;color:var(--sky);z-index:9;text-transform:uppercase;text-shadow:0 1px 6px #000}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.4rem;max-width:1150px;margin:0 auto;align-items:start}
+.float{animation:fl 6s ease-in-out infinite}@keyframes fl{50%{transform:translateY(-14px)}}
+/* entrance */
+#r0{background:radial-gradient(ellipse at 50% 30%,#3b6fe0 0%,#132e6b 45%,#06122e 100%);display:flex;flex-direction:column;justify-content:center}
+.arch{width:min(520px,86vw);margin:0 auto;padding:3rem 1.5rem 2rem;border:3px solid var(--gold);border-radius:260px 260px 10px 10px;background:rgba(6,18,46,.5);box-shadow:0 0 80px rgba(79,140,255,.45),inset 0 0 60px rgba(79,140,255,.25)}
+.door{display:block;margin:1.6rem auto 0;background:var(--bright);color:#fff;border:0;padding:1rem 2.2rem;border-radius:999px;font-size:1rem;cursor:pointer;box-shadow:0 0 30px rgba(80,140,255,.7);animation:pulse 2.4s infinite}
+@keyframes pulse{50%{box-shadow:0 0 55px rgba(120,170,255,1)}}
+.mote{position:absolute;border-radius:50%;background:#bcd4ff;opacity:.6;animation:rise linear infinite}
+@keyframes rise{from{transform:translateY(105vh)}to{transform:translateY(-10vh)}}
+.toc{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;margin-top:1.4rem}.toc a{font-size:.75rem;color:var(--sky);border:1px solid rgba(207,224,255,.35);padding:.35rem .7rem;border-radius:99px;cursor:pointer;text-decoration:none}.toc a:hover{background:rgba(79,140,255,.3)}
+/* food */
+#r1{background:linear-gradient(180deg,#0e2a63,#081a42)}
+.board{max-width:900px;margin:0 auto;background:#0a1630;border:14px solid #5b3d1e;border-radius:8px;padding:2rem;box-shadow:0 25px 50px rgba(0,0,0,.5),inset 0 0 60px rgba(79,140,255,.15);font-family:Caveat,cursive}
+.board h4{font-size:2.4rem;text-align:center;color:#9cc2ff;margin-bottom:1rem}
+.board ul{list-style:none;columns:2;column-gap:2.5rem}.board li{font-size:1.5rem;display:flex;gap:.5rem;break-inside:avoid;padding:.2rem 0;color:#fff}
+.board li i{flex:1;border-bottom:2px dotted rgba(255,255,255,.3);margin-bottom:.5rem}.board li small{font-size:1.1rem;color:#9cc2ff}
+.pol{perspective:900px;height:230px;cursor:pointer}.pol .in{position:relative;width:100%;height:100%;transition:transform .8s;transform-style:preserve-3d}
+.pol.f .in{transform:rotateY(180deg)}
+.pol .fa,.pol .ba{position:absolute;inset:0;backface-visibility:hidden;background:#fdfbf6;color:var(--navy);padding:12px 12px 40px;box-shadow:0 12px 24px rgba(0,0,0,.45);border-radius:3px}
+.pol .fa div{height:100%;background:linear-gradient(135deg,#9cc2ff,#2f5fd0);display:flex;align-items:center;justify-content:center;font-size:4rem}
+.pol .fa span{position:absolute;bottom:8px;left:0;right:0;text-align:center;font-family:Caveat;font-size:1.3rem}
+.pol .ba{transform:rotateY(180deg);display:flex;align-items:center;font-family:Caveat;font-size:1.45rem;line-height:1.2;padding:18px}
+.cup{background:rgba(255,255,255,.06);border:1px solid rgba(207,224,255,.2);border-radius:18px;padding:1.2rem;display:flex;gap:.8rem;align-items:center}
+.cup b{font-size:2rem}
+.steam{position:absolute;font-size:2rem;opacity:.25;animation:steam 5s infinite}@keyframes steam{0%{transform:translateY(0);opacity:0}30%{opacity:.35}100%{transform:translateY(-120px);opacity:0}}
+/* music */
+#r2{background:radial-gradient(circle at 20% 20%,#1d47a8,transparent 50%),linear-gradient(#081a42,#050d24)}
+.vinyls{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:1.6rem;max-width:1150px;margin:0 auto}
+.vin{text-align:center}.disc{width:150px;height:150px;margin:0 auto;border-radius:50%;background:repeating-radial-gradient(circle,#111 0 2px,#1c1c1c 2px 4px);position:relative;animation:spin 6s linear infinite;box-shadow:0 10px 25px rgba(0,0,0,.6)}
+.vin:hover .disc{animation-duration:1.5s}
+.disc::after{content:"";position:absolute;inset:38%;border-radius:50%;background:var(--c);border:3px solid #fff3}
+.disc::before{content:"";position:absolute;inset:0;border-radius:50%;background:linear-gradient(130deg,transparent 40%,rgba(255,255,255,.18) 50%,transparent 60%)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.vin b{display:block;margin-top:.8rem;font-family:'Playfair Display';font-size:1.05rem}.vin small{color:var(--sky);font-size:.78rem}
+.eq{display:flex;gap:4px;justify-content:center;height:40px;align-items:flex-end;margin:1rem 0}.eq i{width:6px;background:var(--bright);animation:eq 1s ease-in-out infinite;border-radius:3px}@keyframes eq{0%,100%{height:8px}50%{height:40px}}
+/* film */
+#r3{background:linear-gradient(#050d24,#0b1f4d)}
+.reel{overflow:hidden;margin:0 -1.2rem;padding:1rem 0}.strip{display:flex;gap:0;width:max-content;animation:roll 40s linear infinite}
+.reel:hover .strip{animation-play-state:paused}@keyframes roll{to{transform:translateX(-50%)}}
+.cell{width:300px;background:#0a0a0a;padding:26px 12px;position:relative}
+.cell::before,.cell::after{content:"";position:absolute;left:0;right:0;height:12px;background:repeating-linear-gradient(90deg,transparent 0 10px,#ddd 10px 22px,transparent 22px 30px)}.cell::before{top:7px}.cell::after{bottom:7px}
+.cell div{background:linear-gradient(160deg,#2f5fd0,#0b1f4d);height:190px;padding:1rem;display:flex;flex-direction:column;justify-content:center;gap:.4rem;border-radius:2px}
+.cell em{font-size:2.2rem;font-style:normal}.cell b{font-family:'Bebas Neue';font-size:1.8rem;letter-spacing:.05em}.cell p{font-size:.85rem;color:var(--ice);line-height:1.4}
+.trackw{max-width:520px;margin:2rem auto 0;position:relative}.trackw svg{width:100%}
+#car{offset-path:path("M60,150 C60,40 200,40 260,90 C320,140 460,40 460,150 C460,250 300,230 260,200 C200,160 60,260 60,150Z");animation:lap 7s linear infinite;offset-rotate:auto;font-size:28px;position:absolute;left:0;top:0}
+@keyframes lap{to{offset-distance:100%}}
+/* roots */
+#r4{background:linear-gradient(#0b1f4d,#0e3a7a)}
+.map{max-width:1100px;margin:0 auto;position:relative;aspect-ratio:2/1;background:radial-gradient(ellipse at 50% 50%,#1a4fb5,#0b2a6b);border-radius:20px;overflow:hidden;box-shadow:inset 0 0 80px rgba(0,0,0,.5)}
+.map svg{position:absolute;inset:0;width:100%;height:100%}
+.pin{position:absolute;transform:translate(-50%,-100%);cursor:pointer;z-index:3}
+.pin i{display:block;width:14px;height:14px;border-radius:50% 50% 50% 0;background:var(--gold);transform:rotate(-45deg);box-shadow:0 0 0 0 rgba(217,180,106,.7);animation:ping 2s infinite}
+@keyframes ping{70%{box-shadow:0 0 0 14px rgba(217,180,106,0)}}
+.pin span{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);white-space:nowrap;font-size:.65rem;background:rgba(6,18,46,.8);padding:.15rem .4rem;border-radius:4px}
+#tip{max-width:600px;margin:1rem auto 0;text-align:center;min-height:3rem;color:var(--ice);font-family:'Playfair Display';font-size:1.15rem}
+.fpath{fill:none;stroke:#cfe0ff;stroke-width:.35;stroke-dasharray:1.5 1.5;animation:dash 4s linear infinite}@keyframes dash{to{stroke-dashoffset:-30}}
+.stamp{background:var(--ice);color:var(--navy);padding:1rem 1.1rem;border-radius:6px;border:2px dashed #2f5fd0;font-size:.92rem;line-height:1.45;display:flex;gap:.7rem;transform:rotate(var(--r))}
+.stamp b{font-size:1.6rem}
+/* style */
+#r5{background:linear-gradient(135deg,#0a1f50,#1a3f8f 60%,#0a1f50)}
+.rail{max-width:1100px;margin:0 auto;border-top:6px solid #c0c8d8;padding-top:0;display:flex;flex-wrap:wrap;gap:1.2rem;justify-content:center}
+.hang{width:150px;text-align:center;transform-origin:top center;animation:sway 4s ease-in-out infinite}
+.hang:hover{animation-duration:1s}@keyframes sway{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+.hook{width:2px;height:26px;background:#c0c8d8;margin:0 auto}
+.sw{height:150px;border-radius:12px 12px 6px 6px;background:var(--c);box-shadow:0 14px 24px rgba(0,0,0,.4);display:flex;align-items:flex-end;justify-content:center;padding:.6rem;transition:transform .3s;position:relative;overflow:hidden}
+.sw::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(255,255,255,.05) 0 4px,transparent 4px 8px)}
+.hang:hover .sw{transform:scale(1.07)}
+.sw b{background:rgba(255,255,255,.92);color:var(--navy);font-size:.8rem;padding:.25rem .5rem;border-radius:4px;z-index:1}
+.hang small{display:block;font-size:.75rem;color:var(--sky);margin-top:.6rem;line-height:1.3}
+/* mind */
+#r6{background:radial-gradient(ellipse at 50% 120%,#1a3f8f,#030a1f 70%)}
+.sky{max-width:1100px;margin:0 auto;position:relative;height:520px}
+.sky svg{position:absolute;inset:0;width:100%;height:100%}
+.star{position:absolute;transform:translate(-50%,-50%);text-align:center;cursor:default}
+.star i{display:block;margin:0 auto;width:8px;height:8px;border-radius:50%;background:#fff;box-shadow:0 0 12px 4px #8fb6ff;animation:tw 3s infinite alternate}
+@keyframes tw{to{box-shadow:0 0 22px 8px #bcd4ff;opacity:.6}}
+.star span{font-family:'Playfair Display';font-size:.85rem;white-space:nowrap}.star small{display:none;font-size:.7rem;color:var(--sky);max-width:160px}
+.star:hover small{display:block}.star:hover i{transform:scale(1.8)}
+.cline{stroke:rgba(188,212,255,.35);stroke-width:.25;stroke-dasharray:200;stroke-dashoffset:200;transition:stroke-dashoffset 3s}
+.room.on .cline{stroke-dashoffset:0}
+.note-card{background:rgba(207,224,255,.08);border:1px solid rgba(207,224,255,.2);border-radius:14px;padding:1rem;display:flex;gap:.7rem;line-height:1.45;font-size:.93rem;backdrop-filter:blur(4px)}
+.note-card b{font-size:1.5rem}
+/* studio */
+#r7{background:linear-gradient(#030a1f,#0b1f4d)}
+.onair{display:block;width:max-content;margin:0 auto 1.5rem;font-family:'Bebas Neue';font-size:2.2rem;letter-spacing:.15em;color:#fff;background:#1d4fb8;padding:.2rem 1.4rem;border-radius:8px;box-shadow:0 0 30px #4f8cff;animation:blink 2s infinite}@keyframes blink{50%{box-shadow:0 0 8px #4f8cff;opacity:.8}}
+.ticker{overflow:hidden;background:#4f8cff;color:#06122e;font-weight:600;padding:.6rem 0;margin:0 -1.2rem 2rem;white-space:nowrap}.ticker div{display:inline-block;animation:roll 30s linear infinite;padding-left:100%}
+.screen{background:#071433;border:2px solid #2f5fd0;border-radius:12px;padding:1rem;display:flex;gap:.7rem;font-size:.92rem;line-height:1.45;box-shadow:0 0 0 1px #0b1f4d,0 10px 25px rgba(0,0,0,.5)}
+.screen b{font-size:1.4rem}
+/* rhythm */
+#r8{background:linear-gradient(180deg,#8fb6ff 0%,#2f5fd0 35%,#0b1f4d 70%,#030a1f 100%)}
+.timeline{max-width:760px;margin:0 auto;position:relative;padding-left:2.5rem}
+.timeline::before{content:"";position:absolute;left:1rem;top:0;bottom:0;width:3px;background:linear-gradient(#fff,#cfe0ff,#4f8cff,#0b1f4d)}
+.tl{position:relative;margin-bottom:1rem;background:rgba(6,18,46,.55);border-radius:12px;padding:.8rem 1rem;display:flex;gap:.7rem;align-items:center;backdrop-filter:blur(4px)}
+.tl::before{content:"";position:absolute;left:-1.85rem;top:50%;width:12px;height:12px;border-radius:50%;background:var(--gold);transform:translateY(-50%)}
+.tl b{font-size:1.5rem}
+.sun{position:absolute;right:8%;top:6rem;width:90px;height:90px;border-radius:50%;background:radial-gradient(#fff6d8,#ffd27a);box-shadow:0 0 60px #ffe7a8}
+/* words */
+#r9{background:radial-gradient(circle,#1a3f8f,#06122e 70%)}
+.venn{position:relative;width:min(560px,92vw);height:min(420px,70vw);margin:0 auto}
+.venn div{position:absolute;width:60%;height:80%;border-radius:50%;mix-blend-mode:screen;display:flex;align-items:center;font-family:'Playfair Display';font-size:1rem;padding:1.5rem;animation:breathe 6s ease-in-out infinite}
+.venn .a{left:0;top:0;background:rgba(47,95,208,.55);justify-content:flex-start}.venn .b{right:0;top:0;background:rgba(79,180,255,.45);justify-content:flex-end;animation-delay:-3s}
+.venn .c{left:20%;top:30%;background:rgba(150,120,255,.35);justify-content:center;align-items:flex-end;padding-bottom:2.5rem}
+.venn em{position:absolute;left:50%;top:40%;transform:translate(-50%,-50%);font-family:Caveat;font-size:1.6rem;color:#fff;text-align:center;z-index:2;font-style:normal}
+@keyframes breathe{50%{transform:scale(1.05)}}
+.rings{position:absolute;left:50%;top:50%;pointer-events:none}.rings i{position:absolute;border:1px solid rgba(207,224,255,.2);border-radius:50%;transform:translate(-50%,-50%);animation:ripple 8s linear infinite}
+@keyframes ripple{from{width:0;height:0;opacity:1}to{width:1400px;height:1400px;opacity:0}}
+.bubbles{position:relative;max-width:1100px;margin:2rem auto 0;display:flex;flex-wrap:wrap;gap:1rem;justify-content:center}
+.bub{background:var(--ice);color:var(--navy);padding:.7rem 1.1rem;border-radius:22px;font-family:'Playfair Display';font-style:italic;position:relative;animation:fl 5s ease-in-out infinite;box-shadow:0 8px 18px rgba(0,0,0,.35)}
+.bub::after{content:"";position:absolute;bottom:-8px;left:22px;border:8px solid transparent;border-top-color:var(--ice);border-bottom:0}
+/* love */
+#r10{background:linear-gradient(160deg,#0b1f4d,#2a3f9a,#0b1f4d)}
+.heartwall{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.2rem;max-width:1150px;margin:0 auto}
+.lc{background:linear-gradient(145deg,#f7f3ea,#dfe9ff);color:var(--navy);border-radius:16px;padding:1.1rem;display:flex;gap:.7rem;line-height:1.45;font-size:.93rem;box-shadow:0 10px 24px rgba(0,0,0,.35)}
+.lc b{font-size:1.6rem}
+.fheart{position:absolute;color:#8fb6ff;animation:rise linear infinite;opacity:.5}
+/* on air archive */
+#r11{background:radial-gradient(ellipse at 50% 20%,#123a8f,#06122e 70%)}
+.noise{position:absolute;inset:-50%;opacity:.07;background:repeating-radial-gradient(circle at 30% 40%,#fff 0 1px,transparent 1px 3px);animation:nz .6s steps(4) infinite}
+@keyframes nz{25%{transform:translate(3%,-2%)}50%{transform:translate(-2%,3%)}75%{transform:translate(2%,2%)}}
+.scan{position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 2px,transparent 2px 4px)}
+.reel{max-width:1150px;margin:0 auto 1.4rem;overflow:hidden;border-top:1px solid rgba(207,224,255,.25);border-bottom:1px solid rgba(207,224,255,.25);padding:.55rem 0;-webkit-mask:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
+.reel div{display:flex;gap:1.4rem;white-space:nowrap;width:max-content;animation:reel 80s linear infinite;font-size:.8rem;letter-spacing:.12em;color:var(--sky)}
+.reel span:nth-child(odd){font-family:'Bebas Neue';color:var(--gold);font-size:1rem}
+@keyframes reel{to{transform:translateX(-50%)}}
+.surf{text-align:center;margin-bottom:1.8rem}.surf button{background:rgba(79,140,255,.18);border:1px solid var(--bright);color:#fff;padding:.6rem 1.2rem;border-radius:30px;font:600 .85rem Inter;cursor:pointer;box-shadow:0 0 18px rgba(79,140,255,.4)}
+.tvs{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:2.2rem 1.4rem;max-width:1150px;margin:0 auto}
+.tv{position:relative;cursor:pointer;outline:none;perspective:900px;padding-top:22px}
+.tv .ant{position:absolute;top:0;left:50%;width:60px;height:24px;transform:translateX(-50%)}
+.tv .ant::before,.tv .ant::after{content:"";position:absolute;bottom:0;width:2px;height:26px;background:#8fa9d8;transform-origin:bottom}
+.tv .ant::before{left:18px;transform:rotate(-30deg)}.tv .ant::after{right:18px;transform:rotate(30deg)}
+.bezel{background:linear-gradient(160deg,#1b2f63,#0a1736);border-radius:22px;padding:12px 12px 30px;box-shadow:0 14px 30px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.15)}
+.knobs{position:absolute;bottom:8px;right:18px;display:flex;gap:6px}.knobs i{width:9px;height:9px;border-radius:50%;background:#d9b46a;box-shadow:0 0 4px #000}
+.scr{position:relative;height:210px;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.5,0,.2,1)}
+.tv.play .scr{transform:rotateX(180deg)}
+.fr,.bk{position:absolute;inset:0;border-radius:14px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;padding:1rem;display:flex;flex-direction:column}
+.fr{background:radial-gradient(ellipse at 50% 40%,#3a74ff,#123a8f 70%,#081a45);box-shadow:inset 0 0 30px rgba(0,0,0,.6),0 0 26px rgba(79,140,255,.55);animation:flick 5s infinite;justify-content:center;align-items:center;text-align:center}
+.fr::after,.bk::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.16) 0 2px,transparent 2px 4px);pointer-events:none}
+.tv:nth-child(3n) .fr{animation-delay:-1.7s}.tv:nth-child(3n+1) .fr{animation-delay:-3.1s}
+@keyframes flick{0%,96%,100%{filter:brightness(1)}97%{filter:brightness(1.5)}98%{filter:brightness(.8)}}
+.fr b{font:2.4rem 'Bebas Neue';letter-spacing:.06em;color:#fff;text-shadow:0 0 14px #9cc2ff}
+.fr em{font-style:normal;font-size:.75rem;letter-spacing:.25em;text-transform:uppercase;color:var(--sky)}
+.fr p{font-family:'Playfair Display';font-style:italic;margin-top:.5rem;font-size:.98rem;line-height:1.3;color:var(--ice)}
+.live{position:absolute;top:.7rem;left:.8rem;font-size:.62rem;letter-spacing:.15em;background:#e0364b;color:#fff;padding:2px 6px;border-radius:4px;animation:blink 1.6s infinite}
+@keyframes blink{50%{opacity:.35}}
+.pl{position:absolute;bottom:.6rem;right:.8rem;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:.8rem}
+.bk{background:linear-gradient(160deg,#eaf2ff,#cfe0ff);color:var(--navy);transform:rotateX(180deg);justify-content:center;box-shadow:0 0 30px rgba(207,224,255,.6)}
+.bk q{font-family:'Playfair Display';font-size:.98rem;line-height:1.4;quotes:"\201C" "\201D"}
+.bk small{margin-top:.6rem;font-size:.68rem;letter-spacing:.18em;color:var(--blue)}
+.tv:focus-visible .bezel{box-shadow:0 0 0 3px var(--gold)}
+@media(hover:hover){.tv:hover .bezel{transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,.6),0 0 30px rgba(79,140,255,.45)}.bezel{transition:.3s}}
+@media(max-width:640px){.tvs{grid-template-columns:1fr 1fr;gap:1.6rem .8rem}.scr{height:250px}.fr b{font-size:1.8rem}.fr p{font-size:.82rem}.bk{padding:.7rem}.bk q{font-size:.78rem;line-height:1.35}.bezel{padding:8px 8px 24px;border-radius:16px}}
+/* letter */
+#r12{background:radial-gradient(ellipse at 50% 0%,#4f8cff,#0b1f4d 60%,#06122e)}
+.env{max-width:660px;margin:0 auto;background:var(--cream);color:var(--navy);padding:2.4rem;border-radius:6px;border:10px solid var(--gold);font-family:'Playfair Display',serif;line-height:1.7;font-size:1.1rem;box-shadow:0 30px 60px rgba(0,0,0,.5)}
+.ph{background:#fff5cc;border:2px dashed #c9a24a;padding:1rem;margin:1rem 0;font-family:Inter;font-size:.9rem;color:#6b5210}
+.confetti{position:absolute;width:8px;height:14px;animation:fall linear infinite}@keyframes fall{from{transform:translateY(-10vh) rotate(0)}to{transform:translateY(110vh) rotate(720deg)}}
+@media(max-width:640px){.vinyls{grid-template-columns:1fr 1fr}.disc{width:120px;height:120px}.board ul{columns:1}.sky{height:720px}.board li{font-size:1.25rem}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
+
+/* gift room */
+.room.gift{padding:0;overflow:hidden}.room.gift>iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block;z-index:1}
+.room.gift~*{}
+body.ongift nav{opacity:.85}
+.introlet .ph{font-size:1rem}
+</style></head><body>
+<div id="glow"></div><div id="rname"></div><div id="track"></div>
+<nav><button id="prev" aria-label="Previous room">&#8592;</button><div id="dots"></div><button id="next" aria-label="Next room">&#8594;</button></nav>
+<script>
+const D={
+food:{menu:[
+["Acai bowls","He LOVES them"],["Berry smoothies","a forever favorite"],["Chocolate banana smoothie","pure joy in a cup"],["Full power smoothie","his signature order"],["Mango sticky rice","always a yes"],["Gnocchi","comfort food"],["Bratwurst with mustard","comfort food"],["Homemade popcorn","movie night essential"],["Roasted chestnuts","winter comfort"],["Masala chai","made by him, with love"],["Airport omelette with minced chicken","a travel day classic"],["cc origins breakfasts","Surat mornings"],["Red wine","the rare glass"],["Proper protein","non-negotiable"]],
+polaroids:[
+["🥄","No sweet tooth. He steers every dessert toward Miona."],
+["🍽️","Eats pretty much everything, but at home in Surat he asked: \u201cwhy am I only eating potatoes? Where is protein?\u201d"],
+["⏰","Breakfast? Coffee and water. \u201cFor breakfast I just need coffee, for lunch I will do my own thing.\u201d"],
+["🧠","Doesn't want to spend mental energy on food decisions."],
+["✈️","Eats happily when traveling, with family, or when Miona plans."],
+["🚭","Does not smoke cigarettes."],
+["🍷","Doesn't really drink. When he does, red wine. Tipsy exactly once, on record."],
+["🍶","Hot sake: willing, not a favorite."],
+["💙","His official request: \u201cplease feed me when I'm with you.\u201d"],
+["🥘","Shabu-shabu, hot pot, Korean BBQ, yakiniku: no thank you. He hates cooking at the table."],
+["🌿","His family's kitchen is mostly strictly vegetarian, Hindu Gujarati style."]],
+cafe:[
+["☕","His order: a normal latte, regular milk, no sugar."],
+["🧊","Also loves a creamy blended iced latte, frappuccino style."],
+["🥛","No good cafe nearby? Emmi Caffè Latte, the Swiss iced coffee."],
+["🇮🇹","A La Marzocco machine (silver body, red letters) means good coffee to him."],
+["🫘","Loves artisanal shops, real roasteries, and people who know good coffee."],
+["🪴","Quiet aesthetic cafes with an inspiring view, like ethos garden cafe."],
+["🏡","His Surat cafe anchor: cc origins and Hussain."]]},
+music:[
+["Hindi romantic songs","where he is most himself"],["Love as a journey","\u201cdon't look for an answer, let this journey keep going\u201d"],["AP Dhillon","\u201cone of my favourite artists\u201d"],["Thinking of You","AP Dhillon, the track he sent"],["Janice STFU","Drake, he sings along"],["Shebang","Drake, also sung loudly"],["I Was Made For Lovin' You","KISS"],["You're All I've Got Tonight","The Cars"],["Hona Tha Pyaar","their song"],["Tu Jaane Na","call and response"],["Hindi music + dancing","he sings, Miona dances for him"],["Moonlight music walks","headphones and night air"],["Bachata","part of his aesthetic"],["Rick Rubin","an artist he admires"],["New album scooter rides","Surat soundtrack"],["Our playlist","made together"]],
+film:[
+["🏎️","F1","No single favorite movie, but F1 is at the top of his list."],
+["🇮🇳","Swades","Started together, never finished together. Miona thinks he finished it on his own."],
+["💌","Kal Ho Naa Ho","Rewatched on a feeling after seeing a friend."],
+["🍿","Bollywood nights","Loves watching Bollywood with Miona, and sometimes on his own."],
+["🎞️","Feelings","He processes his feelings through films."]],
+places:[
+["Surat",21.17,72.83,"Grew up here until 17. Home: Ashirwad Park, Citylight."],
+["Waterloo",43.46,-80.52,"About ten years in Canada. Nanotechnology Engineering at the University of Waterloo."],
+["San Francisco",37.77,-122.42,"Dream trip: SFO again."],
+["Paris",48.86,2.35,"Dream trip: France. Stood at the Eiffel Tower and thought \u201cwhat now?\u201d"],
+["Wil, Switzerland",47.46,9.05,"Saw real Swiss cows at last, the \u201cDalmatian cows\u201d."],
+["North India",30.7,77.5,"Dream: a slow trip around the north if he had more time in India."],
+["Goa",15.3,74.1,"Scooters and poems all night."],
+["Koh Phangan",9.73,100.0,"Together in Thailand."],
+["Bangkok",13.75,100.5,"Mango sticky rice territory."],
+["Croatia",43.5,16.4,"A wedding, together."],
+["Network School, Kazakhstan",43.24,76.9,"Mid Oct 2026: \u201cit's amazing here.\u201d"],
+["Guatuso, Costa Rica",10.67,-84.82,"Researched from afar: Río Celeste, Palenque Margarita, Río Frío."],
+["Montreal",45.5,-73.57,"Where he found Schopenhauer."]],
+roots:[
+["🛵","A perfect Surat morning: chai with his sister Shanaya, then a scooter ride with a new album."],
+["🫖","In Surat he feels deeply at home: friends, scooters, chai, cc origins."],
+["🚀","After a few weeks home he asks \u201cwhy am I here?\u201d and moves toward his goals."],
+["🧀","As a kid he ate a cheese with a Swiss cow on the pack and dreamed of real Swiss cows with bells."],
+["🐄","In Switzerland he saw them, loved them, and named the black and white ones \u201cDalmatian cows\u201d."],
+["🖍️","Miona's niece Amalia drew him pictures of exactly those Dalmatian cows."],
+["🏔️","His best friend Dhruv loves Switzerland, which made him curious: \u201cOkay, let's see.\u201d"],
+["🗺️","Switzerland was never on his roadmap, and that is exactly why he went."],
+["✨","Childhood dream: never a job title. Just to be himself, his own person, and happy."],
+["🇫🇷","Learned French and loves the moment the gibberish suddenly gets a reaction."],
+["🗼","Monuments satisfy for five seconds. The precious things are the ones money can't buy."],
+["🌍","Travel is work and work is travel. He never takes a vacation."],
+["🍳","Joined Miona's family Sunday breakfast in Wil: crepes and fresh bread."],
+["🗣️","Learns words and phrases with her family, proactive and leading."],
+["🇬🇺","Father's side Gujarati, the vegetarian kitchen he grew up with."],
+["👨‍👩‍👧","Family circle: papa, grandmom, didi and Shanaya."]],
+style:[
+["#0b2a6b","Dark blue","His favorite color: shades of blue, mostly dark blue"],
+["#e8dcc4","Linen","soft shirts only"],["#f3efe6","Cotton","soft and breathable"],["#cfe3d4","Bamboo","the softest"],
+["#2b2b2b","Skater shirt","a non-skater who sometimes wears one"],["#1f3f8f","Jack & Jones","a shirt brand for him"],["#c8102e","Lululemon","his sportswear"],
+["#d4af37","Golden ring","the only jewelry, from his grandparents"],["#1d4fb8","Blue Nivea","certified lip balm addict"],["#bcd4ff","No cologne","just him"],
+["#334","Size M","his usual shirt"],["#556","Length 31","pants"],["#778","US 9.5","shoes, 26.7 cm"],["#e9b8c8","His shirt on Miona","Shanaya asked why"]],
+thinkers:[
+["Upanishads","Atman, Brahman, Māyā. His most dedicated streams"],["Vedānta","the deep root"],["Nietzsche","From Rice Cookers to Nietzsche"],["Schopenhauer","bridge to the Upanishads"],["Buddhism","dharma and ancient India"],["Alan Watts",""],["Gurdjieff","the Fourth Way, presence"],["Balaji Srinivasan","agency and the Network State"],["Schrödinger",""],["Thoreau",""],["Tiziano Terzani",""],["Marcus Aurelius","Stoicism"],["Kevin Kelly",""],["Rumi",""],["Camus",""],["Spinoza",""],["Taleb",""],["Flow",""],["Women Who Run with the Wolves","read to understand Miona better"],["Rick Rubin","creativity"]],
+mind:[
+["📚","Reads and circles philosophy, psychology, tech, art, history and culture."],
+["✍️","Writes poems, sometimes with his eyes closed."],
+["💌","Keeps physical letters. One is titled \u201cso loaded\u201d."],
+["🇮🇳","More poetic, funny and himself in Hindi."],
+["🎨","Thinks of himself as an artist. \u201cMy work is me.\u201d"],
+["🌀","More creative than operator, by his own framing."],
+["🕊️","Doesn't want anyone else in control of his emotions. Goal: be happy wherever he is and keep creating beauty."],
+["🔓","Believes life after 18 is about unlearning conditioning and learning to think independently."],
+["🧭","Seeks net-new experiences and loves noticing how they change his thinking."],
+["🦁","Says Miona has made him more courageous, even in his work."],
+["📓","He journals."],
+["⭕","Loves explaining things with Venn diagrams."]],
+work:[
+["📡","Founder of School of Streaming."],["🔥","Livestreaming on X and YouTube is his peace of mind. Nearly daily for about two years."],["⏱️","Ideal stream: about 1.5 to 2 hours."],["🏕️","Le Campfire, his stream vibe."],["💬","\u201cA livestream a day keeps the ordinary away.\u201d"],["🤖","Signature thesis: AI × presence × agency."],["🏛️","The best AI apps are built on philosophy, not features."],["🧠","Built Olivia, his AI second brain."],["✂️","Builds clip bots and streaming workflows."],["🌐","Makes boyfriend.here.now microsites."],["🎓","University of Waterloo, Nanotechnology Engineering."],["💼","Previously a PM at Microsoft."],["💘","Founded and sold a dating startup, One, in 2022."],["🇰🇿","Network School Kazakhstan, and he says it's amazing."],["🗓️","Goals there: a stable routine, health, daily streaming."],["⚙️","Builds systems that strip away what doesn't matter so his mind is free for what does."],["🌊","Wants to live and work from overflow and giving."],["✒️","Newsletter on beehiiv, YouTube @prxshantbagga, X @prcshxnt."],["🔁","Early years: travel, conferences, meetups. Now: a long-term stable foundation."]],
+rhythm:[
+["🌅","Wakes and walks first to clear his mind."],["☕","Ideally with a La Marzocco coffee in hand."],["💻","Mornings: his own thing, a coworking spot or a streaming spot."],["🥗","Lunch: his own thing."],["🗣️","Good conversations in the day."],["🍝","A good dinner."],["🚶","A nice walk in the evening."],["🌙","Night person. Works and streams at night, sometimes 1am to 7am with poems."],["🏋️","Full-body workouts, especially when the food is good."],["💆","Massage ranking: head #1, then shoulders and neck, then feet."],["😴","Long lap naps with a head massage."],["🔇","Dislikes loud places, shaky wifi, and unaesthetic spaces."],["📶","A beautiful cafe that blocks X is a dealbreaker."],["🖼️","Loves quiet, big, spacious, artsy, hipster cafes with a view."],["⚖️","Not in a vacation phase. Wants a balance."]],
+words:["it's a fine balance...","it's a push and pull dynamic","it's a spectrum","it's interesting, right...?","there's this notion that...","I'm a curious guy","I told you, right...?","people love to serve beauty, baby","I want to create so much beauty with you","we are concentric circles baby","it's like a Venn diagram...","my work is me","please feed me when I'm with you","we make the rules","what now?","I love you SO MUCH","ich liebe dich","merci mon cœur","u ma wifey","you are my muse","i love US!!!","i want to grow old with you"],
+love:[
+["🤲","Big on touch, acts of service, and words."],["🎁","Loves receiving: being fed, head massages, soft shirts, chai, quiet beautiful spaces, poems and letters."],["🛠️","Loves giving: sound healing bookings, dinner to the room, building apps, sites and little tools."],["🦸","When Miona is with him he goes into overdrive: caring, protecting, providing."],["💎","Values her little ways of care most: \u201cinvaluable things that no money can buy.\u201d"],["🧸","Apart, he misses \u201cthe little, little things.\u201d"]],
+us:[
+["🌱","Met on 7 June."],["🦋","She is his butterfly. He is her rare rabbit."],["🎨","Artist and muse, both ways. \u201cYou are my muse.\u201d"],["💜","A secret fake purple wedding card with their names."],["🇩🇪","She taught him ich liebe dich. He sent it the next morning."],["🎵","Hona Tha Pyaar played as he walked in the door, and at the start of an Empire call. He melted."],["📀","Volume one, volume two point eight, volume 2.9999999."],["🫖","Chai walks."],["🏋️","Gym together, long walks together."],["🌕","Joined her full moon beach ceremony from India in solidarity. She is his moonlight, sunlight and Jupiter light."],["➖","Minus distance."],["🎂","Her birthday from afar: sound healing under the stars and a dessert that appears only when she asks for the bill."],["📸","First professional photo together: \u201ci love US!!!\u201d"],["🎧","\u201cFirst real date vibes\u201d headphones photo."],["🛋️","Loved it when she left the table for the sofa: \u201cMY GIRL.\u201d"],["💆","Booked her a 90 minute massage in India from afar."],["🗓️","Sunday Empire meetings, since 31 August."],["🎉","Four months on 7 October, in Wil."],["📧","\u201c3 things in guatuso, from your lover\u201d: Río Celeste, Palenque Margarita, Río Frío at golden hour."],["🐺","Reading Women Who Run with the Wolves to understand her."],["🔁","Seeing separation and union as a beautiful cycle, \u201cif we do this right\u201d."],["⭐","Two wholes who choose to come together and create beauty."]]
+};
+
+D.streams=[["561", "Oct 23", "Choose your frontier", "Some find it in traveling as far as possible, some find it in loving as deeply as possible. And you have to choose your frontier."], ["560", "Oct 20", "Coffee, craft and the best tools", "Having the highest quality equipment forces an artist to also produce the highest quality work."], ["559", "Oct 18", "Happy people, happy places", "If the people around you are not happy, then you are not happy. So then the goal is that I want to be around people who are happy."], ["558", "Oct 16", "Meet them where they are", "The most beautiful way to convince people is to have them have that realization by themselves, to actually meet them where they are."], ["557", "Oct 15", "Sharing what you build", "Now I wanna share even that with my girlfriend, so that she also has a solution."], ["556", "Oct 4", "Exposing the mind to beauty", "Not only how do we expose our mind to all the beauty, but also how do we simplify it?"], ["555", "Oct 3", "See the world", "You have to see the world. There are beautiful places, places which look amazing."], ["552", "Sep 29", "A society where we can flourish", "Not just go to work where you're surrounded by good people, but also live in a place where you're surrounded by good people."], ["551", "Sep 27", "The space to dream", "The space to dream is as equally important as actually being exposed to experiences that will open your mind up to even dreaming."], ["550", "Sep 23", "The one thing all along", "It takes some time to finally realize that there was just one thing that you were really good at all along the way."], ["549", "Sep 23", "Two years of streaming", "I have streamed on 500 days in the last two years. I've documented my entire journey."], ["548", "Sep 19", "True love is onboarding someone", "My girlfriend has this beautiful thing. You go live, and then you collect experiences, and then you bring that back into the stream. And that's the cycle."], ["547", "Sep 16", "When AGI can do everything", "Sometimes when she is traveling, I would love to give her coffee recommendations."], ["546", "Sep 14", "Intelligence vs awareness", "In constant anticipation of what's next, we stop to enjoy the present."], ["545", "Sep 12", "A library of every temple livestream", "What if we basically build a library of all the temple live streams across India?"], ["544", "Sep 11", "We are in business", "It's funny that this is showing up like we're building this live."], ["543", "Sep 10", "Ancient universities and AI", "How can we get more and more people to start streaming? And then start creating art that is also their art."], ["542", "Sep 9", "Shiv Shakti, non-duality", "Very soon we'll deploy them to create beauty, to create magic."], ["541", "Sep 9", "Accumulate resources, create beauty", "You need a place where people appreciate your art and you can keep refining your art."], ["540", "Sep 7", "Relationship as the highest form of learning", "Courage is really important. Are you courageous to put your ideas out there now? Now you have all the tools to tell the stories and the feelings."], ["539", "Sep 6", "Operating out of overflow", "Every time I want to give her a gift, I want to give her a beautiful experience."], ["538", "Sep 3", "Curious about the city", "There are so many rickshaws and autos and cars going around, and you think, what are they doing, what are they working on? It makes you think a lot."], ["537", "Aug 31", "Pushing the limits", "Every time you face resistance, that's where you develop."], ["536", "Aug 30", "How founding a family changes a man", "She is visiting India for the very first time. And I want to make sure she has a great experience."], ["535", "Aug 29", "Beyond just getting work done", "It's also creating beauty, and that is something really important."], ["534", "Aug 27", "Philosophy across the world", "It's interesting to combine and look into the different conclusions that different parts of the world, philosophy, come to."], ["533", "Aug 25", "Chai and the scriptures", "You need to find a good spot. You have some good food. You have some chai, and then you go deep into the scriptures."], ["532", "Aug 24", "Build something that helps people", "You have to actually end up building something that helps other people."], ["531", "Aug 23", "Adding beauty", "How do you add more beauty to other people's lives?"], ["530", "Aug 21", "Humans being humans", "Humans can truly be humans now, because the reliability which machines are good at is actually done by machines."]];
+
+</script>
+<script>
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const rnd=(a,b)=>a+Math.random()*(b-a);
+const d=(i,step=60)=>`style="transition-delay:${Math.min(i*step,1500)}ms"`;
+const head=(l,t,intro)=>`<div class="label rv">${l}</div><h2 class="rv">${t}</h2><p class="intro rv">${intro}</p>`;
+const card=(cls,f,i)=>`<div class="${cls} rv tilt" ${d(i)}><b>${f[0]}</b><span>${f[1]}</span></div>`;
+const R=[];const OFF=2;
+R.push({t:"A Little Present",gift:1,h:()=>`<iframe title="A little present" srcdoc="&lt;!doctype html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1,viewport-fit=cover&quot;&gt;
+&lt;title&gt;for you, my sweetness&lt;/title&gt;&lt;meta name=&quot;robots&quot; content=&quot;noindex&quot;&gt;
+&lt;style&gt;
+:root{--deep:#0f2f6b;--mid:#2f5fb3;--sky:#9fc3ff;--ice:#eef4ff}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:Georgia,&#x27;EB Garamond&#x27;,serif;color:var(--deep);background:linear-gradient(180deg,#e6efff,#fff 40%,#eef4ff);min-height:100vh;overflow-x:hidden}
+.sans{font-family:-apple-system,system-ui,Helvetica,Arial,sans-serif}
+#intro{position:fixed;inset:0;z-index:50;background:radial-gradient(circle at 50% 40%,#3d72cf,#0f2f6b);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer;transition:opacity .8s,transform .8s}
+#intro.gone{opacity:0;transform:scale(1.15);pointer-events:none}
+#intro h1{font-size:2.3rem;font-style:italic;font-weight:400}
+#intro p{margin-top:1rem;letter-spacing:3px;font-size:.8rem;text-transform:uppercase;animation:pulse 1.6s infinite}
+.env{font-size:4rem;margin-bottom:1rem;animation:bob 2.4s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.4}}@keyframes bob{50%{transform:translateY(-10px) rotate(-4deg)}}
+.heart{position:fixed;bottom:-40px;pointer-events:none;z-index:60;animation:float linear forwards;color:var(--sky)}
+@keyframes float{to{transform:translateY(-115vh) rotate(25deg);opacity:0}}
+main{max-width:520px;margin:0 auto;padding:28px 18px 60px}
+header{text-align:center;padding:30px 0 10px}
+.kick{font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--mid)}
+header h2{font-size:2rem;line-height:1.1;margin:10px 0}
+header .hi{font-style:italic;color:var(--mid);font-size:1.25rem}
+header p{margin-top:12px;line-height:1.5}
+h3{font-size:.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--mid);margin:38px 0 14px;border-bottom:1px solid #c8d8f3;padding-bottom:6px}
+.tl{position:relative;padding-left:26px}.tl:before{content:&quot;&quot;;position:absolute;left:8px;top:4px;bottom:4px;width:2px;background:var(--sky)}
+.ev{position:relative;margin-bottom:18px;opacity:0;transform:translateX(-20px);transition:all .7s}
+.ev.in{opacity:1;transform:none}
+.ev:before{content:&quot;♥&quot;;position:absolute;left:-25px;top:0;color:var(--mid);background:#fff;font-size:.9rem}
+.ev b{display:block;font-size:1.15rem}.ev span{line-height:1.45;font-size:.97rem}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{perspective:900px;height:190px;cursor:pointer}
+.card:last-child{grid-column:span 2}
+.inner{position:relative;width:100%;height:100%;transition:transform .7s;transform-style:preserve-3d}
+.card.f .inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:16px;padding:14px;display:flex;flex-direction:column;justify-content:center;text-align:center}
+.front{background:linear-gradient(145deg,#2f5fb3,#0f2f6b);color:#fff}
+.front .e{font-size:2rem}.front b{font-size:1.1rem;margin-top:6px}.front small{opacity:.7;font-size:.65rem;margin-top:8px;letter-spacing:1px}
+.back{background:#fff;border:1.5px solid var(--mid);transform:rotateY(180deg);font-size:.85rem;line-height:1.35}
+.back i{display:block;margin-top:8px;color:var(--mid);font-size:.8rem}
+.qbox{background:var(--deep);color:#fff;border-radius:18px;padding:22px;text-align:center;min-height:150px;display:flex;flex-direction:column;justify-content:center;transition:opacity .35s}
+.qbox q{font-style:italic;font-size:1.15rem;line-height:1.4}.qbox small{display:block;margin-top:10px;color:var(--sky);font-size:.7rem;letter-spacing:1.5px;text-transform:uppercase}
+button{font-family:inherit;border:0;border-radius:999px;background:var(--mid);color:#fff;padding:12px 22px;font-size:1rem;margin-top:12px;cursor:pointer;box-shadow:0 4px 14px #2f5fb355}
+button:active{transform:scale(.96)}
+.center{text-align:center}
+.quiz{background:#fff;border-radius:18px;padding:18px;box-shadow:0 6px 24px #0f2f6b18}
+.quiz .q{font-size:1.1rem;margin-bottom:12px}.opts button{display:block;width:100%;margin:8px 0 0;background:var(--ice);color:var(--deep);box-shadow:none;text-align:left;border-radius:12px}
+.opts button.ok{background:#2f5fb3;color:#fff}.opts button.no{background:#dfe7f5;opacity:.6}
+.fb{margin-top:12px;font-style:italic;color:var(--mid);min-height:1.4em}
+.shelf{display:flex;flex-wrap:wrap;align-items:flex-end;gap:4px;padding:10px 8px 0;border-bottom:10px solid #b9cdef;border-radius:4px}
+.bk{writing-mode:vertical-rl;transform:rotate(180deg);color:#fff;padding:10px 6px;border-radius:3px;font-size:.78rem;cursor:pointer;transition:transform .25s}
+.bk:hover,.bk.up{transform:rotate(180deg) translateY(10px)}
+#note{margin-top:12px;min-height:3em;font-style:italic;text-align:center;line-height:1.4}
+.end{text-align:center;margin-top:46px}.end h4{font-size:2.3rem;font-weight:400;margin:16px 0 6px}.end .sig{font-style:italic;color:var(--mid)}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
+&lt;div id=&quot;intro&quot;&gt;&lt;div class=&quot;env&quot;&gt;💌&lt;/div&gt;&lt;h1&gt;hello my sweetness&lt;/h1&gt;&lt;p class=&quot;sans&quot;&gt;tap to open&lt;/p&gt;&lt;/div&gt;
+&lt;main&gt;
+&lt;header&gt;&lt;div class=&quot;kick sans&quot;&gt;a little present, just because&lt;/div&gt;&lt;h2&gt;What I learned about you through your streams&lt;/h2&gt;&lt;div class=&quot;hi&quot;&gt;hello my sweetness,&lt;/div&gt;
+&lt;p&gt;I went back through your streams, from June all the way to this week, and listened to you think out loud. Here is what I found: a man who turns curiosity into a daily practice, and who keeps choosing beauty.&lt;/p&gt;&lt;/header&gt;
+
+&lt;h3 class=&quot;sans&quot;&gt;Milestones&lt;/h3&gt;
+&lt;div class=&quot;tl&quot;&gt;
+&lt;div class=&quot;ev&quot;&gt;&lt;b&gt;4 Oct 2024&lt;/b&gt;&lt;span&gt;Your very first stream, from your first home of your own in Vancouver.&lt;/span&gt;&lt;/div&gt;
+&lt;div class=&quot;ev&quot;&gt;&lt;b&gt;16 Jun 2026&lt;/b&gt;&lt;span&gt;&quot;First stream of Miona&quot;: you handed me your laptop and asked what I was curious about.&lt;/span&gt;&lt;/div&gt;
+&lt;div class=&quot;ev&quot;&gt;&lt;b&gt;23 Jul 2026&lt;/b&gt;&lt;span&gt;The first time you called me &quot;my girlfriend&quot; on a stream. Yes, I noticed. 😌&lt;/span&gt;&lt;/div&gt;
+&lt;div class=&quot;ev&quot;&gt;&lt;b&gt;Ep. 564&lt;/b&gt;&lt;span&gt;And counting. Past 560 episodes of showing up, live, every day.&lt;/span&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;h3 class=&quot;sans&quot;&gt;Ideas you keep coming back to · tap a card&lt;/h3&gt;
+&lt;div class=&quot;cards&quot;&gt;
+&lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;inner&quot;&gt;&lt;div class=&quot;face front&quot;&gt;&lt;div class=&quot;e&quot;&gt;🌸&lt;/div&gt;&lt;b&gt;Beauty&lt;/b&gt;&lt;small class=&quot;sans&quot;&gt;97 STREAMS&lt;/small&gt;&lt;/div&gt;&lt;div class=&quot;face back&quot;&gt;It&#x27;s in almost every stream, from your earliest ones to today. Funny, because that&#x27;s exactly what I see when I look at you.&lt;i&gt;&quot;I think beauty is really important.&quot;&lt;/i&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;inner&quot;&gt;&lt;div class=&quot;face front&quot;&gt;&lt;div class=&quot;e&quot;&gt;🐇&lt;/div&gt;&lt;b&gt;Curiosity&lt;/b&gt;&lt;small class=&quot;sans&quot;&gt;85 STREAMS&lt;/small&gt;&lt;/div&gt;&lt;div class=&quot;face back&quot;&gt;Your compass. You follow it down every rabbit hole. I&#x27;m very happy to be your favorite one.&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;inner&quot;&gt;&lt;div class=&quot;face front&quot;&gt;&lt;div class=&quot;e&quot;&gt;🕯️&lt;/div&gt;&lt;b&gt;Presence and attention&lt;/b&gt;&lt;small class=&quot;sans&quot;&gt;74 STREAMS&lt;/small&gt;&lt;/div&gt;&lt;div class=&quot;face back&quot;&gt;You talk about where attention goes. Mine goes straight to you, every time.&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;inner&quot;&gt;&lt;div class=&quot;face front&quot;&gt;&lt;div class=&quot;e&quot;&gt;🪴&lt;/div&gt;&lt;b&gt;Your environment shapes you&lt;/b&gt;&lt;small class=&quot;sans&quot;&gt;62 STREAMS&lt;/small&gt;&lt;/div&gt;&lt;div class=&quot;face back&quot;&gt;Light, plants, the right cafe. I&#x27;d like to apply for &quot;favorite environment&quot;.&lt;i&gt;&quot;I want things to have some character because I want my environment to inspire me.&quot;&lt;/i&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;inner&quot;&gt;&lt;div class=&quot;face front&quot;&gt;&lt;div class=&quot;e&quot;&gt;✨&lt;/div&gt;&lt;b&gt;Consciousness and the soul&lt;/b&gt;&lt;small class=&quot;sans&quot;&gt;46 STREAMS&lt;/small&gt;&lt;/div&gt;&lt;div class=&quot;face back&quot;&gt;Upanishads, Jung, Dante. You keep asking what we are underneath it all. I just know mine recognises yours.&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;inner&quot;&gt;&lt;div class=&quot;face front&quot;&gt;&lt;div class=&quot;e&quot;&gt;🦋&lt;/div&gt;&lt;b&gt;Courage and leaps&lt;/b&gt;&lt;small class=&quot;sans&quot;&gt;49 STREAMS&lt;/small&gt;&lt;/div&gt;&lt;div class=&quot;face back&quot;&gt;Showing your face, leaving the safe path, leaping again. Brave looks really good on you.&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;inner&quot;&gt;&lt;div class=&quot;face front&quot;&gt;&lt;div class=&quot;e&quot;&gt;🌊&lt;/div&gt;&lt;b&gt;Overflow and abundance&lt;/b&gt;&lt;small class=&quot;sans&quot;&gt;44 STREAMS&lt;/small&gt;&lt;/div&gt;&lt;div class=&quot;face back&quot;&gt;You want to live and give from overflow. Consider my heart permanently overflowing.&lt;i&gt;&quot;You have a gift and you want to give away that gift to as many people as possible.&quot;&lt;/i&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;h3 class=&quot;sans&quot;&gt;Shuffle a quote&lt;/h3&gt;
+&lt;div class=&quot;qbox&quot; id=&quot;qb&quot;&gt;&lt;q id=&quot;qt&quot;&gt;Tap the button for something you said.&lt;/q&gt;&lt;small id=&quot;qs&quot; class=&quot;sans&quot;&gt;your words, my favorites&lt;/small&gt;&lt;/div&gt;
+&lt;div class=&quot;center&quot;&gt;&lt;button id=&quot;shuf&quot;&gt;shuffle 🔀&lt;/button&gt;&lt;/div&gt;
+
+&lt;h3 class=&quot;sans&quot;&gt;How well do I know you?&lt;/h3&gt;
+&lt;div class=&quot;quiz&quot;&gt;&lt;div class=&quot;sans kick&quot; id=&quot;qn&quot;&gt;&lt;/div&gt;&lt;div class=&quot;q&quot; id=&quot;qq&quot;&gt;&lt;/div&gt;&lt;div class=&quot;opts&quot; id=&quot;qo&quot;&gt;&lt;/div&gt;&lt;div class=&quot;fb&quot; id=&quot;qf&quot;&gt;&lt;/div&gt;&lt;div class=&quot;center&quot;&gt;&lt;button id=&quot;qnext&quot; style=&quot;display:none&quot;&gt;next ♥&lt;/button&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 class=&quot;sans&quot;&gt;Your bookshelf · tap a spine&lt;/h3&gt;
+&lt;div class=&quot;shelf&quot; id=&quot;shelf&quot;&gt;&lt;/div&gt;&lt;div id=&quot;note&quot;&gt;Pick one.&lt;/div&gt;
+
+&lt;div class=&quot;end&quot;&gt;&lt;button id=&quot;burst&quot;&gt;one last thing… tap me&lt;/button&gt;&lt;h4&gt;I love you SO MUCH&lt;/h4&gt;&lt;div class=&quot;sig&quot;&gt;your Miona&lt;/div&gt;&lt;div class=&quot;center&quot;&gt;&lt;button id=&quot;toMuseum&quot; onclick=&quot;try{parent.go(1)}catch(e){}&quot;&gt;now step into your museum &amp;rarr;&lt;/button&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/main&gt;
+&lt;script&gt;
+const $=s=&gt;document.querySelector(s);
+function hearts(n,big){for(let i=0;i&lt;n;i++){const h=document.createElement(&#x27;div&#x27;);h.className=&#x27;heart&#x27;;h.textContent=[&#x27;♥&#x27;,&#x27;💙&#x27;,&#x27;♡&#x27;,&#x27;✨&#x27;][i%4];h.style.left=Math.random()*100+&#x27;vw&#x27;;h.style.fontSize=(big?18:12)+Math.random()*22+&#x27;px&#x27;;h.style.animationDuration=3+Math.random()*4+&#x27;s&#x27;;h.style.animationDelay=Math.random()*(big?1:6)+&#x27;s&#x27;;document.body.appendChild(h);setTimeout(()=&gt;h.remove(),12000)}}
+hearts(18);if(location.hash===&quot;#open&quot;){$(&quot;#intro&quot;).remove();document.querySelectorAll(&quot;.ev&quot;).forEach(e=&gt;e.classList.add(&quot;in&quot;));document.querySelectorAll(&quot;.card&quot;)[0].classList.add(&quot;f&quot;)}
+if($(&#x27;#intro&#x27;))$(&#x27;#intro&#x27;).onclick=()=&gt;{$(&#x27;#intro&#x27;).classList.add(&#x27;gone&#x27;);hearts(30,true);setTimeout(()=&gt;$(&#x27;#intro&#x27;).remove(),900)};
+const io=new IntersectionObserver(es=&gt;es.forEach((e,i)=&gt;{if(e.isIntersecting){setTimeout(()=&gt;e.target.classList.add(&#x27;in&#x27;),i*180);io.unobserve(e.target)}}),{threshold:.3});
+document.querySelectorAll(&#x27;.ev&#x27;).forEach(e=&gt;io.observe(e));
+document.querySelectorAll(&#x27;.card&#x27;).forEach(c=&gt;c.onclick=()=&gt;c.classList.toggle(&#x27;f&#x27;));
+const Q=[[&quot;I think beauty is really important.&quot;,&quot;Rabbit hole stream · 17 Jun 2026&quot;],[&quot;You have a gift and you want to give away that gift to as many people as possible.&quot;,&quot;what&#x27;s on my feed? · 3 Jul 2026&quot;],[&quot;I want things to have some character because I want my environment to inspire me.&quot;,&quot;Ep. 18 · 31 Jul 2026&quot;],[&quot;I just want vitality I want to feel amazing.&quot;,&quot;Ep. 31 · 16 Aug 2026&quot;],[&quot;I don&#x27;t want my craft to be dependent on someone else. I want to control my craft.&quot;,&quot;Ep. 549 · 23 Sep 2026&quot;],[&quot;My answer is that the peak human experience is flow state.&quot;,&quot;Ep. 564 · 30 Oct 2026&quot;],[&quot;I promise to you that I&#x27;m not gonna let ego come into the way of our love.&quot;,&quot;Ep. 562 · 25 Oct 2026&quot;],[&quot;I think going deep into rabbit holes and streaming is way better than just scrolling on Twitter.&quot;,&quot;Ep. 560 · 20 Oct 2026&quot;],[&quot;I think my journey looks beautiful in the past few years.&quot;,&quot;why X wants streamers? · 2 Jul 2026&quot;]];
+let qi=-1;$(&#x27;#shuf&#x27;).onclick=()=&gt;{let n;do{n=Math.floor(Math.random()*Q.length)}while(n===qi);qi=n;$(&#x27;#qb&#x27;).style.opacity=0;setTimeout(()=&gt;{$(&#x27;#qt&#x27;).textContent=Q[n][0];$(&#x27;#qs&#x27;).textContent=Q[n][1];$(&#x27;#qb&#x27;).style.opacity=1},300)};
+const QZ=[[&quot;Which book is your favorite?&quot;,[&quot;The War of Art&quot;,&quot;Atomic Habits&quot;,&quot;The 48 Laws of Power&quot;],0,&quot;Correct. Resistance never stood a chance against you.&quot;],
+[&quot;How many times did you watch F1 in a theater?&quot;,[&quot;Once&quot;,&quot;Twice&quot;,&quot;Zero, I waited for streaming&quot;],1,&quot;Twice! Because it&#x27;s really a movie about flow state, of course.&quot;],
+[&quot;When did you learn to type with all ten fingers?&quot;,[&quot;At 8, a prodigy&quot;,&quot;Around 20 or 21, with Monkeytype&quot;,&quot;Still two index fingers&quot;],1,&quot;Late bloomer, fast fingers. I like it.&quot;],
+[&quot;Before X, where did you stream?&quot;,[&quot;Twitch&quot;,&quot;YouTube&quot;,&quot;Instagram Live&quot;],1,&quot;YouTube! And I was your guest for my very first stream.&quot;],
+[&quot;Whose new album did you blast on your scooter?&quot;,[&quot;Diljit Dosanjh&quot;,&quot;Taylor Swift&quot;,&quot;Arijit Singh&quot;],0,&quot;Diljit. Picturing you on that scooter makes me smile every time.&quot;]];
+let zi=0,score=0;function showQ(){const z=QZ[zi];$(&#x27;#qn&#x27;).textContent=&#96;question &#36;{zi+1} of &#36;{QZ.length}&#96;;$(&#x27;#qq&#x27;).textContent=z[0];$(&#x27;#qf&#x27;).textContent=&#x27;&#x27;;$(&#x27;#qnext&#x27;).style.display=&#x27;none&#x27;;$(&#x27;#qo&#x27;).innerHTML=&#x27;&#x27;;z[1].forEach((o,i)=&gt;{const b=document.createElement(&#x27;button&#x27;);b.textContent=o;b.onclick=()=&gt;{if($(&#x27;#qo&#x27;).dataset.done)return;$(&#x27;#qo&#x27;).dataset.done=1;[...$(&#x27;#qo&#x27;).children].forEach((c,j)=&gt;c.classList.add(j===z[2]?&#x27;ok&#x27;:&#x27;no&#x27;));if(i===z[2]){score++;$(&#x27;#qf&#x27;).textContent=z[3];hearts(8,true)}else $(&#x27;#qf&#x27;).textContent=&#x27;Hmm, nope! &#x27;+z[3];$(&#x27;#qnext&#x27;).style.display=&#x27;inline-block&#x27;};$(&#x27;#qo&#x27;).appendChild(b)});delete $(&#x27;#qo&#x27;).dataset.done}
+$(&#x27;#qnext&#x27;).onclick=()=&gt;{zi++;if(zi&lt;QZ.length)showQ();else{$(&#x27;#qn&#x27;).textContent=&#x27;results&#x27;;$(&#x27;#qq&#x27;).textContent=&#96;You got &#36;{score} of &#36;{QZ.length}.&#96;;$(&#x27;#qo&#x27;).innerHTML=&#x27;&#x27;;$(&#x27;#qf&#x27;).textContent=score&gt;=4?&quot;Okay, you know yourself almost as well as I know you. 😉&quot;:&quot;Don&#x27;t worry, I&#x27;ll keep remembering for both of us. 💙&quot;;$(&#x27;#qnext&#x27;).style.display=&#x27;none&#x27;}};showQ();
+const B=[[&quot;The War of Art&quot;,&quot;Steven Pressfield. Your favorite. Turning pro, every single day.&quot;],[&quot;Walden&quot;,&quot;Thoreau. Your June rabbit hole on quiet desperation.&quot;],[&quot;What is Life?&quot;,&quot;Schrödinger. Physics meets the soul.&quot;],[&quot;Tiziano Terzani&quot;,&quot;A whole stream on the Italian traveler and writer.&quot;],[&quot;Gurdjieff&quot;,&quot;Two June rabbit holes on the Fourth Way.&quot;],[&quot;The Mastery of Love&quot;,&quot;Don Miguel Ruiz. We talked about it together on stream. 🥹&quot;],[&quot;The War of Art&quot;,&quot;Steven Pressfield&quot;],[&quot;Nietzsche&quot;,&quot;Living each day as if you&#x27;d live it again and again.&quot;],[&quot;Carl Jung&quot;,&quot;A relationship is a mirror.&quot;],[&quot;Upanishads&quot;,&quot;You keep coming back to them.&quot;],[&quot;Rumi&quot;,&quot;Love as a path.&quot;],[&quot;Divine Comedy&quot;,&quot;Dante, guided by Beatrice.&quot;],[&quot;Makoto Shinkai&quot;,&quot;Your Name. Your favorite director.&quot;],[&quot;Charlie Munger&quot;,&quot;Show me the incentive and I&#x27;ll show you the outcome.&quot;],[&quot;Ramanujan &amp; Hardy&quot;,&quot;Mathematical beauty, recognised.&quot;]].filter((b,i)=&gt;i!==6);
+const C=[&#x27;#0f2f6b&#x27;,&#x27;#2f5fb3&#x27;,&#x27;#4a7fd6&#x27;,&#x27;#1d4590&#x27;,&#x27;#6b98e0&#x27;,&#x27;#173d82&#x27;];
+B.forEach((b,i)=&gt;{const d=document.createElement(&#x27;div&#x27;);d.className=&#x27;bk sans&#x27;;d.textContent=b[0];d.style.background=C[i%C.length];d.style.height=(110+(i*37)%60)+&#x27;px&#x27;;d.onclick=()=&gt;{document.querySelectorAll(&#x27;.bk&#x27;).forEach(x=&gt;x.classList.remove(&#x27;up&#x27;));d.classList.add(&#x27;up&#x27;);$(&#x27;#note&#x27;).innerHTML=&#x27;&lt;b&gt;&#x27;+b[0]+&#x27;&lt;/b&gt;: &#x27;+b[1]};$(&#x27;#shelf&#x27;).appendChild(d)});
+$(&#x27;#burst&#x27;).onclick=()=&gt;{hearts(70,true);$(&#x27;#burst&#x27;).textContent=&#x27;again? 💙&#x27;};
+&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;
+"></iframe>`});
+R.push({t:"Before You Enter",h:()=>`${head("A Letter","Before you walk in","A few words from me, to open the museum.")}
+<div class="env rv introlet"><p>My love,</p><div class="ph">Miona's introduction letter goes here.</div><p>Now come in. 💙<br>Miona</p></div>`});
+R.push({t:"Entrance",h:()=>{let m='';for(let i=0;i<30;i++)m+=`<i class="mote" style="left:${rnd(0,100)}%;width:${rnd(2,6)}px;height:${rnd(2,6)}px;animation-duration:${rnd(10,25)}s;animation-delay:-${rnd(0,25)}s"></i>`;
+return `<div class="bg" data-px="0.3">${m}</div><div class="arch rv tilt"><div class="label">A gallery curated with love by Miona</div><h1>The \u201cI'm a curious guy\u201d Museum</h1><p class="intro" style="margin:1rem auto 0">Eleven rooms about one very curious guy. Walk through with the arrows, your keys, or a swipe. Hover, tap and flip things. Almost everything moves.</p><button class="door" onclick="go(OFF+1)">Enter the gallery &#8594;</button><div class="toc" id="toc"></div></div>`}});
+R.push({t:"Food & Drink",h:()=>{let s='';for(let i=0;i<6;i++)s+=`<span class="steam" style="left:${rnd(5,95)}%;top:${rnd(20,90)}%;animation-delay:-${rnd(0,5)}s">☁</span>`;
+return `<div class="bg">${s}</div>${head("Room I","Food & Drink","The house menu, then a table of polaroids. Tap a polaroid to flip it.")}
+<div class="board rv tilt"><h4>Today's specials, chez Prashant</h4><ul>${D.food.menu.map(m=>`<li>${m[0]}<i></i><small>${m[1]}</small></li>`).join('')}</ul></div>
+<h3 class="rv">The polaroid table</h3><div class="grid">${D.food.polaroids.map((p,i)=>`<div class="pol rv" ${d(i)} style="transform:rotate(${rnd(-4,4)}deg);transition-delay:${i*60}ms" onclick="this.classList.toggle('f')"><div class="in"><div class="fa"><div>${p[0]}</div><span>tap me</span></div><div class="ba">${p[1]}</div></div></div>`).join('')}</div>
+<h3 class="rv">The coffee bar</h3><div class="grid">${D.food.cafe.map((f,i)=>card('cup',f,i)).join('')}</div>`}});
+R.push({t:"Music",h:()=>{const cs=['#4f8cff','#cfe0ff','#d9b46a','#2f5fd0','#8fb6ff','#f7f3ea','#1d4fb8','#9cc2ff'];
+return `${head("Room II","The Record Wall","Every record here is something he plays, sings or loves. Hover to make one spin faster.")}
+<div class="eq">${Array.from({length:24},(_,i)=>`<i style="animation-delay:-${(i*.13).toFixed(2)}s"></i>`).join('')}</div>
+<div class="vinyls">${D.music.map((m,i)=>`<div class="vin rv" ${d(i)}><div class="disc" style="--c:${cs[i%cs.length]};animation-delay:-${rnd(0,6)}s"></div><b>${m[0]}</b><small>${m[1]}</small></div>`).join('')}</div>`}});
+R.push({t:"Film",h:()=>{const cells=D.film.map(f=>`<div class="cell"><div><em>${f[0]}</em><b>${f[1]}</b><p>${f[2]}</p></div></div>`).join('');
+return `${head("Room III","The Screening Room","A film strip that never stops rolling (hover to pause), and one little F1 car doing laps.")}
+<div class="reel rv"><div class="strip">${cells}${cells}</div></div>
+<div class="trackw rv"><svg viewBox="0 0 520 300"><path d="M60,150 C60,40 200,40 260,90 C320,140 460,40 460,150 C460,250 300,230 260,200 C200,160 60,260 60,150Z" fill="none" stroke="#cfe0ff" stroke-width="22" opacity=".15"/><path d="M60,150 C60,40 200,40 260,90 C320,140 460,40 460,150 C460,250 300,230 260,200 C200,160 60,260 60,150Z" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="10 10"/><text x="260" y="160" text-anchor="middle" fill="#cfe0ff" font-family="Bebas Neue" font-size="34">F1 · TOP OF HIS LIST</text></svg><div id="car">🏎️</div></div>`}});
+R.push({t:"Roots & Travel",h:()=>{const P=D.places.map(p=>({n:p[0],x:(p[2]+180)/360*100,y:(90-p[1])/180*100,t:p[3]}));const s=P[0];
+const paths=P.slice(1).map(p=>{const mx=(s.x+p.x)/2,my=Math.min(s.y,p.y)-12;return `<path class="fpath" d="M${s.x},${s.y/2} Q${mx},${my/2} ${p.x},${p.y/2}"/>`}).join('');
+let grid='';for(let x=0;x<=100;x+=5)grid+=`<line x1="${x}" y1="0" x2="${x}" y2="50" stroke="#fff" stroke-opacity=".06" stroke-width=".15"/>`;for(let y=0;y<=50;y+=5)grid+=`<line x1="0" y1="${y}" x2="100" y2="${y}" stroke="#fff" stroke-opacity=".06" stroke-width=".15"/>`;
+return `${head("Room IV","Roots & Travel","Every flight path starts in Surat. Tap a pin to read its story.")}
+<div class="map rv"><svg viewBox="0 0 100 50" preserveAspectRatio="none">${grid}${paths}</svg>${P.map((p,i)=>`<div class="pin" style="left:${p.x}%;top:${p.y}%" data-t="${p.t.replace(/"/g,'&quot;')}" onclick="tip.textContent=this.dataset.t" onmouseenter="tip.textContent=this.dataset.t"><i style="animation-delay:-${i*.3}s"></i><span>${p.n}</span></div>`).join('')}</div>
+<p id="tip">Surat: where it all began.</p>
+<h3 class="rv">Passport stamps</h3><div class="grid">${D.roots.map((f,i)=>`<div class="stamp rv tilt" ${d(i)} style="--r:${rnd(-2.5,2.5).toFixed(1)}deg;transition-delay:${i*50}ms"><b>${f[0]}</b><span>${f[1]}</span></div>`).join('')}</div>`}});
+R.push({t:"Style",h:()=>`${head("Room V","The Wardrobe","A rail of swatches, all softly swaying. Hover one to try it on.")}
+<div class="rail">${D.style.map((s,i)=>`<div class="hang rv" ${d(i)} style="animation-delay:-${rnd(0,4)}s;transition-delay:${i*50}ms"><div class="hook"></div><div class="sw" style="--c:${s[0]}"><b>${s[1]}</b></div><small>${s[2]}</small></div>`).join('')}</div>`});
+R.push({t:"Mind & Thinkers",h:()=>{const n=D.thinkers.length;const pts=D.thinkers.map((t,i)=>{const a=i/n*Math.PI*2*1.6;const r=18+i*1.6;return{x:50+Math.cos(a)*r*.95,y:50+Math.sin(a)*r*1.05,t}});
+let lines='';pts.forEach((p,i)=>{if(i)lines+=`<line class="cline" x1="${pts[i-1].x}" y1="${pts[i-1].y}" x2="${p.x}" y2="${p.y}"/>`});
+let st='';for(let i=0;i<70;i++)st+=`<i style="position:absolute;left:${rnd(0,100)}%;top:${rnd(0,100)}%;width:2px;height:2px;background:#fff;opacity:${rnd(.2,.8)};border-radius:50%"></i>`;
+return `<div class="bg" data-px="0.5">${st}</div>${head("Room VI","The Constellation of Thinkers","The minds and books he keeps coming back to, linked like stars. Hover a star.")}
+<div class="sky rv"><svg viewBox="0 0 100 100" preserveAspectRatio="none">${lines}</svg>${pts.map(p=>`<div class="star" style="left:${Math.max(6,Math.min(94,p.x))}%;top:${Math.max(4,Math.min(96,p.y))}%"><i></i><span>${p.t[0]}</span><small>${p.t[1]}</small></div>`).join('')}</div>
+<h3 class="rv">Notes from his inner world</h3><div class="grid">${D.mind.map((f,i)=>card('note-card',f,i)).join('')}</div>`}});
+R.push({t:"Studio",h:()=>`${head("Room VII","The Studio","Where the curious guy goes live.")}<span class="onair rv">● ON AIR</span>
+<div class="ticker"><div>A livestream a day keeps the ordinary away · School of Streaming · Le Campfire · AI × presence × agency · Network School · Olivia · boyfriend.here.now · @prcshxnt · </div></div>
+<div class="grid">${D.work.map((f,i)=>card('screen',f,i)).join('')}</div>`});
+R.push({t:"A Day in His Life",h:()=>`<div class="sun float"></div>${head("Room VIII","A Day in His Life","From the first walk at sunrise to the 1am stream. Scroll down through the day.")}
+<div class="timeline">${D.rhythm.map((f,i)=>card('tl',f,i)).join('')}</div>`});
+R.push({t:"Things He Says",h:()=>`<div class="rings bg" style="left:50%;top:40%;inset:auto">${[0,2,4,6].map(s=>`<i style="animation-delay:-${s}s"></i>`).join('')}</div>${head("Room IX","Concentric Circles","A Venn diagram of his favorite words, with speech bubbles drifting around it.")}
+<div class="venn rv"><div class="a">a fine balance</div><div class="b">a spectrum</div><div class="c">push and pull</div><em>\u201cI'm a<br>curious guy\u201d</em></div>
+<div class="bubbles">${D.words.map((w,i)=>`<span class="bub rv" style="animation-delay:-${rnd(0,5).toFixed(1)}s;transition-delay:${i*50}ms;font-size:${rnd(.9,1.25).toFixed(2)}rem">\u201c${w}\u201d</span>`).join('')}</div>`});
+R.push({t:"How He Loves",h:()=>{let h='';for(let i=0;i<18;i++)h+=`<span class="fheart" style="left:${rnd(0,100)}%;font-size:${rnd(12,30)}px;animation-duration:${rnd(12,24)}s;animation-delay:-${rnd(0,24)}s">💙</span>`;
+return `<div class="bg">${h}</div>${head("Room X","How He Loves","How he gives love, how he likes to receive it, and a few of the sweetest moments.")}
+<div class="heartwall">${D.love.map((f,i)=>card('lc',f,i)).join('')}</div><h3 class="rv">Little moments, framed</h3><div class="heartwall">${D.us.map((f,i)=>card('lc',f,i)).join('')}</div>`}});
+R.push({t:"On Air Archive",h:()=>{const tv=D.streams.map((s,i)=>`<div class="tv rv" ${d(i,45)} tabindex="0" role="button" aria-label="Episode ${s[0]}, tap to play the quote" onclick="this.classList.toggle('play')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.classList.toggle('play')}"><i class="ant"></i><div class="bezel"><div class="scr"><div class="fr"><span class="live">● LIVE</span><b>EP. ${s[0]}</b><em>${s[1]}</em><p>${s[2]}</p><span class="pl">▶</span></div><div class="bk"><q>${s[3]}</q><small>EP. ${s[0]} · ${s[1]}</small></div></div></div><div class="knobs"><i></i><i></i></div></div>`).join('');
+const reel=D.streams.map(s=>`<span>EP. ${s[0]}</span><span>${s[2]}</span>`).join('');
+return `<div class="bg"><div class="noise"></div><div class="scan"></div></div>${head("Room XI","On Air Archive","Thirty nights of him going live, and one line from each that stayed with me. Tap a screen to tune in.")}
+<div class="reel rv"><div>${reel}${reel}</div></div>
+<div class="surf rv"><button onclick="surf()">📺 Surf all channels</button></div>
+<div class="tvs">${tv}</div>`}});
+function surf(){const t=[...document.querySelectorAll('.tv')];const on=!t.some(x=>x.classList.contains('play'));t.forEach((x,i)=>setTimeout(()=>x.classList.toggle('play',on),RM?0:i*90))}
+R.push({t:"Happy Birthday",h:()=>{let c='';const cs=['#4f8cff','#cfe0ff','#d9b46a','#fff','#2f5fd0'];for(let i=0;i<40;i++)c+=`<i class="confetti" style="left:${rnd(0,100)}%;background:${cs[i%5]};animation-duration:${rnd(6,14)}s;animation-delay:-${rnd(0,14)}s"></i>`;
+return `<div class="bg">${c}</div>${head("Final Room","Happy Birthday, Prashant","The last exhibit is a letter.")}
+<div class="env rv"><p>My love,</p><div class="ph">Miona's closing letter goes here.</div><p>I love you SO MUCH,<br>Miona 💙</p></div>`}});
+const track=document.getElementById('track'),dots=document.getElementById('dots');
+R.forEach((r,i)=>{const s=document.createElement('section');s.className='room'+(r.gift?' gift':'');s.id='r'+i;s.innerHTML=r.h();track.appendChild(s);const dt=document.createElement('span');dt.title=r.t;dt.onclick=()=>go(i);dots.appendChild(dt)});
+document.getElementById('toc').innerHTML=R.slice(OFF+1).map((r,i)=>`<a onclick="go(${i+OFF+1})">${r.t}</a>`).join('');
+const secs=[...document.querySelectorAll('.room')];let cur=0;
+function go(i){cur=Math.max(0,Math.min(R.length-1,i));track.style.transform=`translateX(-${cur*100}vw)`;secs.forEach((s,j)=>{s.classList.toggle('on',j===cur)});secs[cur].scrollTop=0;
+[...dots.children].forEach((x,j)=>x.className=j===cur?'a':'');rname.textContent=(cur>OFF?'Room '+(cur-OFF)+' · ':'')+R[cur].t;document.body.classList.toggle('ongift',cur===0);prev.disabled=!cur;next.disabled=cur==R.length-1;history.replaceState(null,'','#'+cur)}
+prev.onclick=()=>go(cur-1);next.onclick=()=>go(cur+1);
+addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(cur+1);if(e.key==='ArrowLeft')go(cur-1)});
+let sx=null,sy=0;addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY});addEventListener('touchend',e=>{if(sx==null)return;const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5)go(cur+(dx<0?1:-1));sx=null});
+if(!RM){addEventListener('pointermove',e=>{glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px';const nx=e.clientX/innerWidth-.5,ny=e.clientY/innerHeight-.5;
+document.querySelectorAll('.room.on [data-px]').forEach(b=>b.style.transform=`translate(${nx*-40*b.dataset.px}px,${ny*-40*b.dataset.px}px)`)});
+document.addEventListener('pointermove',e=>{const t=e.target.closest('.tilt');document.querySelectorAll('.tilt.tl-on').forEach(x=>{if(x!==t){x.style.transform='';x.classList.remove('tl-on')}});if(!t)return;const r=t.getBoundingClientRect();const x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;t.classList.add('tl-on');t.style.transform=`perspective(700px) rotateY(${x*10}deg) rotateX(${-y*10}deg) translateY(-4px)`})}
+addEventListener('resize',()=>go(cur));go(+(location.hash.slice(1))||0);
+
+</script>
+</body></html>
